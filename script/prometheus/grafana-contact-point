@@ -1,0 +1,154 @@
+Setting up Contact Points in Grafana for email notifications involves configuring how alerts are sent to email addresses. Here’s a step-by-step guide to setting up email-based contact points in Grafana:
+
+1. Configure Grafana SMTP Settings
+Before setting up email contact points, ensure that Grafana is configured to send emails via an SMTP server.
+
+Open Grafana configuration file (grafana.ini).
+Locate the [smtp] section and configure the settings:
+ini
+Copy code
+[smtp]
+enabled = true
+host = smtp.example.com:587  # SMTP server and port
+user = your-email@example.com  # Your SMTP username
+password = your-password  # Your SMTP password
+from_address = grafana@example.com  # Sender email address
+from_name = Grafana
+Save the file and restart Grafana.
+2. Navigate to Alerting UI
+Grafana 8.x+ introduced a new unified alerting system with contact points and notification policies:
+
+In the Grafana sidebar, go to Alerting > Contact Points.
+3. Create a New Contact Point
+Click the New contact point button to set up an email notification point.
+In the dialog box:
+Name: Give the contact point a meaningful name (e.g., Ops Team Email).
+Email addresses: Add the email addresses that will receive the alerts. You can add multiple email addresses, separated by commas.
+4. Configure Email Settings
+Expand the Email section:
+To: List of email recipients.
+Single email: If enabled, this sends one email per alert; otherwise, emails are sent individually to each recipient.
+Disable resolve message: Optionally disable sending emails when an alert resolves.
+5. Test Email Contact Point
+Before finalizing, test the contact point to ensure emails are properly configured:
+
+In the same dialog, click the Test button to trigger a test alert email.
+Verify that the emails are received by the listed recipients.
+6. Save Contact Point
+Once satisfied with the setup, click Save contact point.
+7. Assign Contact Point to Notification Policy
+After setting up the contact point, you must assign it to a notification policy.
+Go to Alerting > Notification Policies.
+Add a policy that directs alerts based on certain conditions (e.g., severity, alert status) to the newly created contact point.
+Example Use Case
+You might want to set up a contact point for critical alerts that go to an on-call email group, and another for less urgent alerts sent to a monitoring team.
+
+Best Practices
+Use group emails: For teams, it’s often better to send notifications to a group email instead of individual addresses.
+Define multiple contact points: Use different contact points for different alert severities (e.g., one for critical alerts, another for warnings).
+Test regularly: Ensure the SMTP server and contact point configurations are functioning by sending test emails periodically.
+Ensure email delivery: Monitor that alert emails are not ending up in spam folders and are properly delivered. 
+
+
+
+Integrating contact points in Grafana for Slack, Microsoft Teams, and PagerDuty ensures that alerts are sent to the right communication channels in your monitoring setup. Below are the steps for setting up these integrations:
+
+1. Slack Integration
+To integrate Slack with Grafana Contact Points for alerting:
+
+Prerequisites
+A Slack workspace.
+Permissions to add and configure apps in Slack.
+Steps:
+Create a Slack App and Incoming Webhook
+
+Navigate to Slack API and create a new Slack App.
+Under Features, go to Incoming Webhooks.
+Activate Incoming Webhooks and add a new webhook to a channel.
+Copy the Webhook URL provided by Slack.
+Set Up Slack Contact Point in Grafana
+
+Go to Alerting > Contact Points.
+Click New contact point and name it (e.g., Slack Alerts).
+In the Slack section, configure the following:
+Webhook URL: Paste the Slack Webhook URL you copied.
+Optional fields: Configure the message fields like channel, username, and custom icon if needed.
+Mention: Optionally mention users or groups by adding their handles.
+Test the Slack Contact Point
+
+Click Test to send a test notification to Slack and verify if it works.
+Save the contact point once it is confirmed.
+Assign to Notification Policy
+
+After creating the Slack contact point, assign it to a notification policy under Alerting > Notification Policies to ensure that alerts are routed to Slack.
+2. Microsoft Teams Integration
+To send alerts to Microsoft Teams via Grafana:
+
+Prerequisites
+A Microsoft Teams account with permissions to create connectors.
+Steps:
+Create a Webhook in Microsoft Teams
+
+Open your Microsoft Teams application.
+Navigate to the channel where you want to receive alerts.
+Click on More options (three dots next to the channel name), then select Connectors.
+Search for Incoming Webhook and click Configure.
+Name the webhook (e.g., Grafana Alerts) and click Create.
+Copy the Webhook URL provided by Teams.
+Set Up Microsoft Teams Contact Point in Grafana
+
+In Grafana, go to Alerting > Contact Points.
+Click New contact point and name it (e.g., Teams Alerts).
+In the Webhook section, paste the Microsoft Teams Webhook URL.
+Save the contact point.
+Test the Teams Contact Point
+
+Test the contact point by clicking Test.
+Confirm that the test message appears in the selected Teams channel.
+Assign to Notification Policy
+
+After creating the Microsoft Teams contact point, assign it to a notification policy to ensure alerts are routed correctly.
+3. PagerDuty Integration
+To integrate PagerDuty with Grafana for incident management:
+
+Prerequisites
+A PagerDuty account with an API key.
+Steps:
+Create an Integration in PagerDuty
+
+Log into your PagerDuty account.
+Go to Configuration > Services.
+Create a new service or use an existing one.
+Under Integration, create a new integration using the Events API V2.
+Copy the Integration Key.
+Set Up PagerDuty Contact Point in Grafana
+
+In Grafana, go to Alerting > Contact Points.
+Click New contact point and name it (e.g., PagerDuty Alerts).
+In the PagerDuty section, enter the following:
+Integration Key: Paste the integration key you got from PagerDuty.
+Optionally configure Severity mapping based on your alerting needs.
+Test the PagerDuty Contact Point
+
+Test the integration by sending a test alert using the Test button.
+Verify that the incident appears in PagerDuty.
+Assign to Notification Policy
+
+Assign this contact point to the appropriate notification policy in Grafana.
+Summary of Integration Setup
+Slack:
+
+Create a Slack app and configure an Incoming Webhook.
+Add the Webhook URL to a Grafana contact point under the Slack section.
+Microsoft Teams:
+
+Create an Incoming Webhook in a Teams channel.
+Use the Webhook URL in Grafana’s Webhook section for contact points.
+PagerDuty:
+
+Set up a new PagerDuty service with an Events API integration.
+Use the integration key in Grafana’s PagerDuty section for contact points.
+Best Practices:
+Use notification policies to control which alerts trigger notifications on which platform (Slack, Teams, PagerDuty).
+Test each integration after setting it up to ensure that alerts are properly routed.
+Customize alert messages to provide clear, actionable information for each platform.
