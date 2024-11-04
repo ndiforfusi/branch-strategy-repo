@@ -88,6 +88,7 @@ public class ContactController {
         } catch (Exception e) {
             // Log the error if needed (using a logger)
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.EXTERNAL_SERVER_ERROR);
         }
     }
 }
